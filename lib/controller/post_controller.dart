@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import '../model/post_model.dart';
 import '../network/api_error.dart';
-import '../api_call_handler/post_api_caller.dart';
-
+import '../network/api_executor.dart';
+import '../service/post_api_service.dart';
 class PostController extends ChangeNotifier {
-  final PostApiCaller apiCaller;
+  final PostApiService api;
+  final ApiExecutor executor;
 
-  PostController(this.apiCaller);
+  PostController(this.api, this.executor);
 
-  bool isLoading = false;
   List<PostModel> posts = [];
   ApiError? error;
+  bool isLoading = false;
 
   Future<void> loadPosts() async {
     isLoading = true;
@@ -18,7 +19,7 @@ class PostController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      posts = await apiCaller.getPosts();
+      posts = await executor.execute(() => api.getPosts());
     } on ApiError catch (e) {
       error = e;
     }
@@ -33,8 +34,8 @@ class PostController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final createdPost = await apiCaller.addPost(post);
-      posts.insert(0, createdPost);
+      final created = await executor.execute(() => api.addPost(post));
+      posts.insert(0, created);
     } on ApiError catch (e) {
       error = e;
     }
