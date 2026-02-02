@@ -1,7 +1,7 @@
 import '../controller/post_controller.dart';
 import '../network/dio_client.dart';
+import '../network/api_executor.dart';
 import '../service/post_api_service.dart';
-import '../api_call_handler/post_api_caller.dart';
 
 class AppRoot {
   static PostController createPostController() {
@@ -10,8 +10,8 @@ class AppRoot {
     );
 
     final apiService = PostApiService(dio);
-    final apiCaller = PostApiCaller(apiService);
+    final executor = ApiExecutor();
 
-    return PostController(apiCaller);
+    return PostController(apiService, executor);
   }
 }
