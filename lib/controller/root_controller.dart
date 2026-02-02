@@ -1,6 +1,7 @@
 import '../controller/post_controller.dart';
 import '../network/dio_client.dart';
 import '../service/post_api_service.dart';
+import '../api_call_handler/post_api_caller.dart';
 
 class AppRoot {
   static PostController createPostController() {
@@ -8,7 +9,9 @@ class AppRoot {
       baseUrl: 'https://jsonplaceholder.typicode.com',
     );
 
-    final api = PostApiService(dio);
-    return PostController(api);
+    final apiService = PostApiService(dio);
+    final apiCaller = PostApiCaller(apiService);
+
+    return PostController(apiCaller);
   }
 }
