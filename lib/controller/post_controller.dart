@@ -1,46 +1,54 @@
 import 'package:flutter/material.dart';
-import '../model/post_model.dart';
-import '../network/api_error.dart';
-import '../network/api_executor.dart';
-import '../service/post_api_service.dart';
-class PostController extends ChangeNotifier {
-  final PostApiService api;
-  final ApiExecutor executor;
+import '../base/base_controller.dart';
+import '../model/post_request.dart';
 
-  PostController(this.api, this.executor);
+class PostController extends BaseController {
+  final TextEditingController titleCtrl = TextEditingController();
+  final TextEditingController bodyCtrl = TextEditingController();
+  List<PostRequest> posts = [];
+  String? errorMessage;
 
-  List<PostModel> posts = [];
-  ApiError? error;
-  bool isLoading = false;
+  Future<void> getPosts() async {
+    errorMessage = null;
 
-  Future<void> loadPosts() async {
-    isLoading = true;
-    error = null;
-    notifyListeners();
+    final result = await callApi(restClient.getPosts());
 
-    try {
-      posts = await executor.execute(() => api.getPosts());
-    } on ApiError catch (e) {
-      error = e;
+    if (result != null) {
+      posts = result;
+    } else {
+      errorMessage = 'Failed to load posts';
     }
-
-    isLoading = false;
-    notifyListeners();
   }
 
-  Future<void> createPost(PostModel post) async {
-    isLoading = true;
-    error = null;
-    notifyListeners();
+  Future<bool> createNewPost() async {
+    if (titleCtrl.text.isEmpty || bodyCtrl.text.isEmpty) return false;
 
-    try {
-      final created = await executor.execute(() => api.addPost(post));
-      posts.insert(0, created);
-    } on ApiError catch (e) {
-      error = e;
+    final postRequest = PostRequest(userId: 1, title: titleCtrl.text.trim(), body: bodyCtrl.text.trim());
+
+    final result = await callApi(restClient.addPost(postRequest), apiErrorHandler: (error) async => false);
+
+    if (result != null) {
+      debugPrint('Post Created: $result');
+      titleCtrl.clear();
+      bodyCtrl.clear();
+      return true;
     }
+    return false;
+  }
 
-    isLoading = false;
-    notifyListeners();
+  void submitPost(BuildContext context) async {
+    final success = await createNewPost();
+    if (success && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Post added successfully!')));
+    } else if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to add post')));
+    }
+  }
+
+  @override
+  void dispose() {
+    titleCtrl.dispose();
+    bodyCtrl.dispose();
+    super.dispose();
   }
 }
