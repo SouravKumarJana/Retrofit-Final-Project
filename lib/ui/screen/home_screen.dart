@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../controller/post_controller.dart';
-import '../tab/add_post_tab.dart';
-import '../tab/all_posts_tab.dart';
+import '../page/add_posts_page.dart';
+import '../page/all_posts_page.dart';
 
 class HomeScreen extends StatefulWidget {
-  final PostController controller;
-  const HomeScreen({super.key, required this.controller});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -13,20 +12,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
+  late final PostController controller;
 
   @override
   void initState() {
     super.initState();
-    widget.controller.loadPosts();
+    controller = PostController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Posts'),),
-      body: index == 0
-          ? AllPostsPage(controller: widget.controller)
-          : AddPostPage(controller: widget.controller),
+      appBar: AppBar(title: const Text('Posts')),
+      body: index == 0 ? AllPostsPage(controller: controller) : AddPostPage(controller: controller),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         onTap: (i) => setState(() => index = i),
