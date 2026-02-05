@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'api_error_mapper.dart';
-import 'https_status_code.dart';
 
 class GlobalApiErrorHandler {
   static Future<bool> handle(
@@ -12,19 +11,19 @@ class GlobalApiErrorHandler {
 
     _log(apiError);
 
-    switch (apiError.statusCode) {
-      case HttpStatusCode.unauthorized:
-        // Hree TODO: logout / token refresh
-        break;
+    // switch (apiError.statusCode) {
+    //   case HttpStatusCode.unauthorized:
+    //     // Hree TODO: logout / token refresh
+    //     break;
 
-      case HttpStatusCode.serviceUnavailable:
-      case HttpStatusCode.gatewayTimeout:
-        // Here TODO : retry / offline handling
-        break;
+    //   case HttpStatusCode.serviceUnavailable:
+    //   case HttpStatusCode.gatewayTimeout:
+    //     // Here TODO : retry / offline handling
+    //     break;
 
-      default:
-        break;
-    }
+    //   default:
+    //     break;
+    // }
 
     if (context != null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -38,7 +37,7 @@ class GlobalApiErrorHandler {
 
   static void _log(dynamic error) {
     debugPrint(
-      'API ERROR => ${error.statusCode.code} | ${error.message}',
+      'API ERROR => ${error.statusCode} | ${error.message}',
     );
   }
 }

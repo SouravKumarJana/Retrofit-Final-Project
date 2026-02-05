@@ -32,12 +32,12 @@ class BaseController extends ChangeNotifier {
       bool handled = false;
 
       // Controller-level override 
-      if (apiErrorHandler != null) {
+      if (apiErrorHandler != null) {                   //When local ApiErrorHandler is present like addPost
         handled = await apiErrorHandler(dioError);
       }
 
       // Global fallback
-      if (!handled) {
+      if (!handled) {                           //
         await GlobalApiErrorHandler.handle(
           dioError,
           context: context,
