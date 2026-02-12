@@ -1,3 +1,3 @@
 abstract class AppConfig {
-  static const String baseurl = "https://jsonplaceholder.typicode.com";
+  static const baseUrl = "https://jsonplaceholder.typicode.com";
 }

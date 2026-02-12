@@ -1,44 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../controller/post_controller.dart';
 import '../page/add_posts_page.dart';
 import '../page/all_posts_page.dart';
+import '../../constants/app_strings.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  HomeScreen({super.key});
 
-class _HomeScreenState extends State<HomeScreen> {
-  int index = 0;
-  late final PostController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = PostController();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  final PostController controller = Get.find<PostController>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Posts')),
-      body: index == 0 ? AllPostsPage(controller: controller) : AddPostPage(controller: controller),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: index,
-        onTap: (i) => setState(() => index = i),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Posts'),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
-        ],
-      ),
-    );
+
+    return Obx(() => Scaffold(
+          appBar: AppBar(title: const Text(AppStrings.appName)),
+
+          body: controller.currentIndex.value == 0
+              ? AllPostsPage()
+              : AddPostPage(),
+
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: controller.currentIndex.value,
+            onTap: controller.changeTab,
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.list), label: AppStrings.firstScreenLabel),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.add), label: AppStrings.secondScreeLabel),
+            ],
+          ),
+        ));
   }
 }

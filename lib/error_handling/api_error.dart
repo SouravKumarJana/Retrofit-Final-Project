@@ -1,4 +1,4 @@
-import 'https_status_code.dart';
+import '../error_handling/https_status_code.dart';
 
 class ApiError {
   final HttpStatusCode statusCode;

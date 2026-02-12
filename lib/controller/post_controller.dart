@@ -1,54 +1,81 @@
 import 'package:flutter/material.dart';
-import '../base/base_controller.dart';
-import '../model/post_model.dart';
+import 'package:get/get.dart';
+import '../../../base/base_controller.dart';
+import '../models/post_model.dart';
 
 class PostController extends BaseController {
-  final TextEditingController poststitleCtrl = TextEditingController();
-  final TextEditingController postsbodyCtrl = TextEditingController();
-  List<PostRequest> posts = [];
-  String? errorMessage;
 
-  Future<void> getAllPosts() async {
-    errorMessage = null;
+  final currentIndex = 0.obs;
 
-    final result = await callApi(restClient.getPosts());
-
-    if (result != null) {
-      posts = result;
-    } else {
-      errorMessage = 'Failed to load posts';
-    }
+  void changeTab(int index) {
+    currentIndex.value = index;
   }
 
-  Future<bool> createNewPost() async {
-    if (poststitleCtrl.text.isEmpty || postsbodyCtrl.text.isEmpty) return false;
+  final postsTitleCtrl = TextEditingController();
+  final postsBodyCtrl = TextEditingController();
 
-    final postRequest = PostRequest(userId: 1, title: poststitleCtrl.text.trim(), body: postsbodyCtrl.text.trim());
+  final posts = <PostRequest>[].obs;
+  final errorMessage = ''.obs;
 
-    final result = await callApi(restClient.addPost(postRequest), apiErrorHandler: (error) async => false);
-
-    if (result != null) {
-      debugPrint('Post Created: $result');
-      poststitleCtrl.clear();
-      postsbodyCtrl.clear();
-      return true;
-    }
-    return false;
-  }
-
-  void submitPost(BuildContext context) async {
-    final success = await createNewPost();
-    if (success && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Post added successfully!')));
-    } else if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to add post')));
-    }
+  @override
+  void onInit() {
+    super.onInit();
+    getAllPosts();
   }
 
   @override
-  void dispose() {
-    poststitleCtrl.dispose();
-    postsbodyCtrl.dispose();
-    super.dispose();
+  void onClose() {
+    postsTitleCtrl.dispose();
+    postsBodyCtrl.dispose();
+    super.onClose();
+  }
+
+  Future<void> getAllPosts() async {
+
+    errorMessage.value = '';
+
+    final result = await callApi(
+      restClient.getPosts(),
+    );
+
+    if (result != null) {
+      posts.assignAll(result);
+    } else {
+      errorMessage.value = "Failed to load posts";
+    }
+  }
+
+  Future<void> addPost() async {
+
+    if (!_validateForm()) return;
+
+    final post = PostRequest(
+      userId: 1,
+      title: postsTitleCtrl.text.trim(),
+      body: postsBodyCtrl.text.trim(),
+    );
+
+    final result = await callApi(
+      restClient.addPost(post),
+    );
+
+    if (result != null) {
+      posts.insert(0, post);
+      _clearForm();
+      Get.snackbar("Success", "Post Added Successfully");
+    }
+  }
+
+  bool _validateForm() {
+    if (postsTitleCtrl.text.isEmpty || postsBodyCtrl.text.isEmpty) {
+      Get.snackbar("Error", "All fields required");
+      return false;
+    }
+    return true;
+  }
+
+  void _clearForm() {
+    postsTitleCtrl.clear();
+    postsBodyCtrl.clear();
   }
 }

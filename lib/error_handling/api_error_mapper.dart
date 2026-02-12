@@ -1,9 +1,21 @@
 import 'package:dio/dio.dart';
 import 'api_error.dart';
-import 'https_status_code.dart';
+import '../error_handling/https_status_code.dart';
 
 class ApiErrorMapper {
+
   static ApiError fromDio(DioException error) {
+
+    if (error.type == DioExceptionType.connectionTimeout ||    /// handle Network Error separately
+        error.type == DioExceptionType.receiveTimeout ||
+        error.type == DioExceptionType.connectionError) {
+
+      return ApiError(
+        statusCode: HttpStatusCode.gatewayTimeout,
+        message: "No internet connection",
+      );
+    }
+
     final statusCode = HttpStatusCode.from(
       error.response?.statusCode,
     );
@@ -18,30 +30,34 @@ class ApiErrorMapper {
     HttpStatusCode status,
     DioException error,
   ) {
+
     switch (status) {
+
       case HttpStatusCode.badRequest:
-        return 'Invalid request';
+        return "Invalid request";
 
       case HttpStatusCode.unauthorized:
-        return 'Session expired. Please login again';
+        return "Session expired. Please login again";
 
       case HttpStatusCode.forbidden:
-        return 'Access denied';
+        return "Access denied";
 
       case HttpStatusCode.notFound:
-        return 'Resource not found';
+        return "Resource not found";
 
       case HttpStatusCode.conflict:
-        return 'Conflict occurred';
+        return "Conflict occurred";
 
       case HttpStatusCode.badGateway:
       case HttpStatusCode.serviceUnavailable:
       case HttpStatusCode.gatewayTimeout:
-        return 'Server unavailable. Try again later';
+        return "Server unavailable. Try again later";
 
       case HttpStatusCode.internalServerError:
       default:
-        return error.message ?? 'Something went wrong';
+        return error.response?.data?["message"] ??
+            error.message ??
+            "Something went wrong";
     }
   }
 }

@@ -1,39 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../controller/post_controller.dart';
+import '../../constants/app_strings.dart';
 
 class AddPostPage extends StatelessWidget {
-  final PostController controller;
-  const AddPostPage({super.key, required this.controller});
+
+  final PostController controller = Get.find<PostController>();
+
+  AddPostPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (context, _) {
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              TextField(
-                controller: controller.poststitleCtrl,
-                decoration: const InputDecoration(labelText: 'Title', border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: controller.postsbodyCtrl,
-                decoration: const InputDecoration(labelText: 'Body', border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: controller.isLoading ? null : () => controller.submitPost(context),
-                child: controller.isLoading
-                    ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                    : const Text('Submit'),
-              ),
-            ],
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          TextField(
+            controller: controller.postsTitleCtrl,
+            decoration: const InputDecoration(
+              labelText: AppStrings.postTitleLabel,
+              border: OutlineInputBorder(),
+            ),
           ),
-        );
-      },
+          const SizedBox(height: 12),
+          TextField(
+            controller: controller.postsBodyCtrl,
+            decoration: const InputDecoration(
+              labelText: AppStrings.postBodyLabel,
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Obx(() => ElevatedButton(
+                onPressed: controller.isLoading.value
+                    ? null
+                    : controller.addPost,
+                child: controller.isLoading.value
+                    ? const CircularProgressIndicator()
+                    : const Text("Submit"),
+              )),
+        ],
+      ),
     );
   }
 }

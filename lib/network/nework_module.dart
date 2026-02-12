@@ -1,20 +1,22 @@
 import 'package:dio/dio.dart';
-import 'rest_client.dart';
 import '../core/config/base_url_config.dart';
+import 'rest_client.dart';
 
-abstract class NetworkModule {
-  static Dio prepareDio(String baseurl) {
-    final dio = Dio(
+class NetworkModule {
+
+  static Dio prepareDio(String baseUrl) {
+    return Dio(
       BaseOptions(
-        baseUrl: baseurl,
-        headers: {'Content-Type': 'application/json; charset=UTF-8', 'Accept': 'application/json'},
+        baseUrl: baseUrl,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
       ),
     );
-
-    return dio;
   }
 
   static RestClient getRestClient() {
-    return RestClient(prepareDio(AppConfig.baseurl));
+    return RestClient(prepareDio(AppConfig.baseUrl));
   }
 }
