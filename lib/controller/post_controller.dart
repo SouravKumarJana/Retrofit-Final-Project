@@ -62,13 +62,21 @@ class PostController extends BaseController {
     if (result != null) {
       posts.insert(0, post);
       _clearForm();
-      Get.snackbar("Success", "Post Added Successfully");
+      Get.snackbar("Success", "Post Added Successfully",
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white, 
+        backgroundColor: Colors.blueAccent
+      );
     }
   }
 
   bool _validateForm() {
     if (postsTitleCtrl.text.isEmpty || postsBodyCtrl.text.isEmpty) {
-      Get.snackbar("Error", "All fields required");
+      Get.snackbar("Error", "All fields required",
+        snackPosition: SnackPosition.BOTTOM, 
+        colorText: Colors.white, 
+        backgroundColor: Colors.redAccent 
+      );
       return false;
     }
     return true;
