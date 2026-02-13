@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_application_9/models/posts_model.dart';
 import 'package:get/get.dart';
 import '../error_handling/global_api_error_handler.dart';
 import '../network/rest_client.dart';
@@ -8,7 +7,6 @@ import '../network/rest_client.dart';
 typedef ApiErrorHandler = Future<bool> Function(DioException error);
 
 abstract class BaseController extends GetxController {
-  final posts = <PostsModel>[].obs;
  
   final isLoading = false.obs;
   final RestClient restClient = Get.find();

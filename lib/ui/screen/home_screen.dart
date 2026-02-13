@@ -4,6 +4,7 @@ import '../page/add_posts_page.dart';
 import '../page/all_posts_page.dart';
 import '../../constants/app_strings.dart';
 import '../../controller/home_controller.dart';
+
 class HomeScreen extends StatelessWidget {
 
   HomeScreen({super.key});

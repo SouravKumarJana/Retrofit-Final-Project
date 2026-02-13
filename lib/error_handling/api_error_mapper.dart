@@ -13,7 +13,7 @@ class ApiErrorMapper {
 
       return ApiError(
         statusCode: HttpStatusCode.gatewayTimeout,
-        message: AppStrings.noIntrrnetConnection,
+        message: AppStrings.noInternetConnection,
       );
     }
 

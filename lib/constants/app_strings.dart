@@ -12,8 +12,8 @@ abstract class AppStrings {
   static const allFieldsRequired = "All fields are required";
   static const failedToLoadPosts = "Failed to load posts";
   static const somethingWentWrong = "Something went wrong";
-  static const noIntrrnetConnection = "no Internet Connection";
+  static const noInternetConnection = "no Internet Connection";
   static const unexpectedError = "An unexpected error occurred";
-  static const persingErrorOccurred = "An error occurred while processing data";
+  static const parsingErrorOccurred = "An error occurred while parsing data";
 
 }

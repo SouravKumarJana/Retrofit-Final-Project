@@ -23,7 +23,7 @@ class GlobalErrorHandler {
 
     Get.snackbar(
       AppStrings.error,
-      AppStrings.persingErrorOccurred,
+      AppStrings.parsingErrorOccurred,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.redAccent,
       colorText: Colors.white, 
