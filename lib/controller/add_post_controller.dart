@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_9/controller/post_controller.dart';
 import 'package:flutter_application_9/models/posts_model.dart';
 import '../base/base_controller.dart';
 import '../constants/app_strings.dart';
 import 'package:get/get.dart';
+
 class AddPostController extends BaseController {
 
   final postsTitleCtrl = TextEditingController();
@@ -23,6 +25,11 @@ class AddPostController extends BaseController {
     final result = await callApi(restClient.addPost(request));
 
     if (result != null) {
+      final postController = Get.find<PostController>();
+
+      postController.posts.insert(0, result);
+      postsTitleCtrl.clear();
+      postsBodyCtrl.clear();
       Get.snackbar(AppStrings.success, AppStrings.postAddedSuccessfully);
     }
   }

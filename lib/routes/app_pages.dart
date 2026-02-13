@@ -8,7 +8,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.home,
       page: () => HomeScreen(),
-      binding: PostBinding(),
+      binding: PostBinding(), 
     ),
   ];
 }
