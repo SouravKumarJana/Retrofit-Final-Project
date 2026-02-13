@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/post_controller.dart';
+import '../../controller/home_controller.dart';
 
 class AllPostsPage extends StatelessWidget {
 
-  final PostController controller = Get.find<PostController>();
+  final PostController postController = Get.find<PostController>();
+  final HomeController homeController = Get.find<HomeController>();
+
 
   AllPostsPage({super.key});
 
@@ -13,24 +16,25 @@ class AllPostsPage extends StatelessWidget {
 
     return Obx(() {
 
-      if (controller.isLoading.value) {
+      if (postController.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
 
-      if (controller.errorMessage.isNotEmpty) {
-        return Center(child: Text(controller.errorMessage.value));
+      if (postController.posts.isEmpty) {
+        return const Center(child: Text("No Posts Found"));
       }
 
       return RefreshIndicator(
-        onRefresh: controller.getAllPosts,
+        onRefresh: postController.getAllPosts,
         child: ListView.builder(
-          itemCount: controller.posts.length,
+          itemCount: postController.posts.length,
           itemBuilder: (_, i) => ListTile(
-            title: Text(controller.posts[i].title),
-            subtitle: Text(controller.posts[i].body),
+            title: Text(postController.posts[i].title),
+            subtitle: Text(postController.posts[i].body),
           ),
         ),
       );
-    });
+  });
+
   }
 }

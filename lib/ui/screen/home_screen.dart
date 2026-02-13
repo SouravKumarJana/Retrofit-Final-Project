@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/post_controller.dart';
 import '../page/add_posts_page.dart';
 import '../page/all_posts_page.dart';
 import '../../constants/app_strings.dart';
-
+import '../../controller/home_controller.dart';
 class HomeScreen extends StatelessWidget {
 
   HomeScreen({super.key});
 
-  final PostController controller = Get.find<PostController>();
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +16,18 @@ class HomeScreen extends StatelessWidget {
     return Obx(() => Scaffold(
           appBar: AppBar(title: const Text(AppStrings.appName)),
 
-          body: controller.currentIndex.value == 0
+          body: homeController.currentIndex.value == 0
               ? AllPostsPage()
               : AddPostPage(),
 
           bottomNavigationBar: BottomNavigationBar(
-            currentIndex: controller.currentIndex.value,
-            onTap: controller.changeTab,
+            currentIndex: homeController.currentIndex.value,
+            onTap: homeController.changeTab,
             items: const [
               BottomNavigationBarItem(
                   icon: Icon(Icons.list), label: AppStrings.firstScreenLabel),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.add), label: AppStrings.secondScreeLabel),
+                  icon: Icon(Icons.add), label: AppStrings.secondScreenLabel),
             ],
           ),
         ));

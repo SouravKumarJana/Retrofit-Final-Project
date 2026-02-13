@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'api_error.dart';
 import '../error_handling/https_status_code.dart';
+import '../constants/app_strings.dart';
 
 class ApiErrorMapper {
 
@@ -12,7 +13,7 @@ class ApiErrorMapper {
 
       return ApiError(
         statusCode: HttpStatusCode.gatewayTimeout,
-        message: "No internet connection",
+        message: AppStrings.noIntrrnetConnection,
       );
     }
 
@@ -57,7 +58,7 @@ class ApiErrorMapper {
       default:
         return error.response?.data?["message"] ??
             error.message ??
-            "Something went wrong";
+            AppStrings.somethingWentWrong;
     }
   }
 }

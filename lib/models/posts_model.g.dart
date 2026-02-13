@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'post_model.dart';
+part of 'posts_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostRequest _$PostRequestFromJson(Map<String, dynamic> json) => PostRequest(
+PostsModel _$PostsModelFromJson(Map<String, dynamic> json) => PostsModel(
   id: (json['id'] as num?)?.toInt(),
   userId: (json['userId'] as num).toInt(),
   title: json['title'] as String,
   body: json['body'] as String,
 );
 
-Map<String, dynamic> _$PostRequestToJson(PostRequest instance) =>
+Map<String, dynamic> _$PostsModelToJson(PostsModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/post_controller.dart';
 import '../../constants/app_strings.dart';
+import '../../controller/add_post_controller.dart';
 
 class AddPostPage extends StatelessWidget {
 
-  final PostController controller = Get.find<PostController>();
+  final AddPostController addPostController = Get.find<AddPostController>();
+
 
   AddPostPage({super.key});
 
@@ -17,7 +18,7 @@ class AddPostPage extends StatelessWidget {
       child: Column(
         children: [
           TextField(
-            controller: controller.postsTitleCtrl,
+            controller: addPostController.postsTitleCtrl,
             decoration: const InputDecoration(
               labelText: AppStrings.postTitleLabel,
               border: OutlineInputBorder(),
@@ -25,7 +26,7 @@ class AddPostPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           TextField(
-            controller: controller.postsBodyCtrl,
+            controller: addPostController.postsBodyCtrl,
             decoration: const InputDecoration(
               labelText: AppStrings.postBodyLabel,
               border: OutlineInputBorder(),
@@ -33,12 +34,12 @@ class AddPostPage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Obx(() => ElevatedButton(
-                onPressed: controller.isLoading.value
+                onPressed: addPostController.isLoading.value
                     ? null
-                    : controller.addPost,
-                child: controller.isLoading.value
+                    : addPostController.addPost,
+                child: addPostController.isLoading.value
                     ? const CircularProgressIndicator()
-                    : const Text("Submit"),
+                    : const Text(AppStrings.submit),
               )),
         ],
       ),

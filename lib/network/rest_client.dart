@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import '../models/post_model.dart';
+import '../models/posts_model.dart';
 
 part 'rest_client.g.dart';
 
@@ -10,8 +10,8 @@ abstract class RestClient {
   factory RestClient(Dio dio, {String? baseUrl}) = _RestClient;
 
   @GET('/posts')
-  Future<List<PostRequest>> getPosts();
+  Future<List<PostsModel>> getPosts();
 
   @POST('/posts')
-  Future<String> addPost(@Body() PostRequest post);
+  Future<PostsModel> addPost(@Body() PostsModel post);
 }

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import '../network/nework_module.dart';
 import '../error_handling/global_api_error_handler.dart';
 import '../network/rest_client.dart';
 
@@ -9,8 +9,7 @@ typedef ApiErrorHandler = Future<bool> Function(DioException error);
 abstract class BaseController extends GetxController {
 
   final isLoading = false.obs;
-
-  RestClient get restClient => NetworkModule.getRestClient();
+  final RestClient restClient = Get.find();
 
   Future<T?> callApi<T>(
     Future<T> request, {
@@ -21,7 +20,9 @@ abstract class BaseController extends GetxController {
     if (showLoading) isLoading.value = true;
 
     try {
-      return await request;
+
+      final response = await request;
+      return response;
 
     } on DioException catch (dioError) {
 
@@ -34,6 +35,14 @@ abstract class BaseController extends GetxController {
       if (!handled) {
         await GlobalErrorHandler.handle(dioError);
       }
+
+    } catch (e, stackTrace) {    // Handle the Non-Dio exceptions
+      
+
+      debugPrint("Non-Dio Exception: $e");
+      debugPrintStack(stackTrace: stackTrace);
+
+      await GlobalErrorHandler.handleUnknownError(e);
 
     } finally {
       if (showLoading) isLoading.value = false;
