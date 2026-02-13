@@ -40,7 +40,6 @@ abstract class BaseController extends GetxController {
 
     } catch (e, stackTrace) {    // Handle the Non-Dio exceptions
       
-
       debugPrint("Non-Dio Exception: $e");
       debugPrintStack(stackTrace: stackTrace);
 

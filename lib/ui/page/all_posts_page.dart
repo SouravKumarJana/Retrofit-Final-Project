@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/post_controller.dart';
-import '../../controller/home_controller.dart';
 
 class AllPostsPage extends StatelessWidget {
 
   final PostController postController = Get.find<PostController>();
-  final HomeController homeController = Get.find<HomeController>();
 
 
   AllPostsPage({super.key});
@@ -34,7 +32,7 @@ class AllPostsPage extends StatelessWidget {
           ),
         ),
       );
-  });
+   });
 
   }
 }

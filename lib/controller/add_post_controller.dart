@@ -12,7 +12,12 @@ class AddPostController extends BaseController {
 
   Future<void> addPost() async {
     if (postsTitleCtrl.text.isEmpty || postsBodyCtrl.text.isEmpty) {
-      Get.snackbar(AppStrings.error, AppStrings.allFieldsRequired);
+      Get.snackbar(AppStrings.error, 
+        AppStrings.allFieldsRequired,
+        snackPosition: SnackPosition.BOTTOM, 
+        backgroundColor: Colors.redAccent, 
+        colorText: Colors.white
+      );
       return;
     }
 
